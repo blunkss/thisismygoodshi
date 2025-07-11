@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title></title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Splash Screen -->
+  <div id="splash-screen" class="splash-screen">
+    <button id="enter-btn" class="glow-text">
+      click to enter<span id="dots"></span>
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div id="main-content" class="main hidden">
+    <!-- Rain Canvas -->
+    <canvas id="rain-canvas"></canvas>
+
+    <div class="profile-box">
+      <img src="images/pfp.jpg" alt="My Profile Picture" class="profile-pic" />
+      <h1>@blunks</h1>
+      <p>all my stuff below!</p>
+
+      <div class="button-row">
+        <a href="https://www.roblox.com/users/2620587184/profile" target="_blank" rel="noopener noreferrer">
+          <img src="images/roblox.png" alt="Roblox" class="icon-button" />
+        </a>
+        <a href="https://www.tiktok.com/@blunksss" target="_blank" rel="noopener noreferrer">
+          <img src="images/tiktok.png" alt="TikTok" class="icon-button" />
+        </a>
+        <a href="https://discord.com/users/797610524333965342" target="_blank" rel="noopener noreferrer">
+          <img src="images/discord.png" alt="Discord" class="icon-button" />
+        </a>
+
+        <!-- Litecoin with tooltip above -->
+        <div class="litecoin-wrapper">
+          <a href="LY5kBWe7r2FT1aR7pV3Joqj2akZAsNAfEd" target="_blank" rel="noopener noreferrer">
+            <img src="images/litecoin.png" alt="Litecoin" class="icon-button" />
+          </a>
+          <span class="tooltip">Copy Address</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Music -->
+  <audio id="bg-music" src="song.mp3" loop preload="auto"></audio>
+
+  <script>
+    // Splash dots animation
+    const dotsSpan = document.getElementById('dots');
+    let dotCount = 0;
+    setInterval(() => {
+      dotCount = (dotCount + 1) % 4;
+      dotsSpan.textContent = '.'.repeat(dotCount);
+    }, 500);
+
+    // Enter button logic
+    const enterBtn = document.getElementById('enter-btn');
+    const splashScreen = document.getElementById('splash-screen');
+    const mainContent = document.getElementById('main-content');
+    const bgMusic = document.getElementById('bg-music');
+
+    enterBtn.addEventListener('click', () => {
+      splashScreen.style.display = 'none';
+      mainContent.classList.remove('hidden');
+      bgMusic.volume = 0.5;
+      bgMusic.play();
+      startRain();
+    });
+
+    // Typing effect in browser tab
+    const titleText = "@blunks";
+    let titleIndex = 0;
+    function typeTitle() {
+      if (titleIndex <= titleText.length) {
+        document.title = titleText.slice(0, titleIndex);
+        titleIndex++;
+      } else {
+        titleIndex = 0;
+      }
+      setTimeout(typeTitle, 300);
+    }
+    typeTitle();
+
+    // Rain effect
+    function startRain() {
+      const canvas = document.getElementById('rain-canvas');
+      const ctx = canvas.getContext('2d');
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const maxDrops = 150;
+      const drops = [];
+
+      function random(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function Drop() {
+        this.x = random(0, canvas.width);
+        this.y = random(-canvas.height, 0);
+        this.length = random(10, 20);
+        this.speed = random(4, 10);
+        this.wind = random(-0.5, 0.5);
+        this.opacity = random(0.1, 0.4);
+      }
+
+      Drop.prototype.update = function () {
+        this.y += this.speed;
+        this.x += this.wind;
+        if (this.y > canvas.height) {
+          this.y = -this.length;
+          this.x = random(0, canvas.width);
+        }
+        if (this.x > canvas.width) this.x = 0;
+        if (this.x < 0) this.x = canvas.width;
+      };
+
+      Drop.prototype.draw = function () {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
+        ctx.lineWidth = 1.5;
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(this.x + this.wind * 5, this.y + this.length);
+        ctx.stroke();
+      };
+
+      for (let i = 0; i < maxDrops; i++) {
+        drops.push(new Drop());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let drop of drops) {
+          drop.update();
+          drop.draw();
+        }
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    }
+  </script>
+</body>
+</html>
