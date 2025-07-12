@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>@blunks</title>
+  <title></title>
+  <link rel="icon" href="https://media.discordapp.net/attachments/904739641553485844/1393704841100132383/i-just-did-my-first-two-pixel-art-any-advice-v0-aakjowdhfoca1-removebg-preview.png?ex=68742447&is=6872d2c7&hm=882174acb4c5bb58445350866ae6747d1607c3bb5f21c2ad60e30a00f9c826fc&=&format=webp&quality=lossless" type="image/png">
   <link rel="stylesheet" href="style.css" />
   <style>
+    /* Embedded CSS */
     * {
       margin: 0;
       padding: 0;
@@ -54,6 +56,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      background-color: black;
       overflow: hidden;
     }
 
@@ -158,17 +161,16 @@
 
       <div class="button-row">
         <a href="https://www.roblox.com/users/2620587184/profile" target="_blank" rel="noopener noreferrer">
-          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685365432389692/roblox.png?ex=68741224&is=6872c0a4&hm=b1566d93ec50467da0ab48260aeb3bc3cd62191e9d27c8adaa426d0a953b8dbc&=&format=webp&quality=lossless" alt="Roblox" class="icon-button" />
+          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685365432389692/roblox.png" alt="Roblox" class="icon-button" />
         </a>
         <a href="https://www.tiktok.com/@blunksss" target="_blank" rel="noopener noreferrer">
-          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685364635336885/tiktok.png?ex=68741224&is=6872c0a4&hm=ac11edf1d33511f481c05d740aa8cfd4520481f6fb4f71a488f3f7703f59a3f6&=&format=webp&quality=lossless" alt="TikTok" class="icon-button" />
+          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685364635336885/tiktok.png" alt="TikTok" class="icon-button" />
         </a>
         <a href="https://discord.com/users/797610524333965342" target="_blank" rel="noopener noreferrer">
-          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685365193445456/discord.png?ex=68741224&is=6872c0a4&hm=950aae5a51fec773300d3353d245641a6f7a4e524c969c38f1b0f901c1daf987&=&format=webp&quality=lossless" alt="Discord" class="icon-button" />
+          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685365193445456/discord.png" alt="Discord" class="icon-button" />
         </a>
-
         <div class="litecoin-wrapper" onclick="copyLitecoin()">
-          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685364950040619/litecoin.png?ex=68741224&is=6872c0a4&hm=03d3c7b2b2a469f7c500befd1213f6818709296e192599c4523421ef4f774908&=&format=webp&quality=lossless" alt="Litecoin" class="icon-button" />
+          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685364950040619/litecoin.png" alt="Litecoin" class="icon-button" />
           <span class="tooltip" id="litecoin-tooltip">Copy Address</span>
         </div>
       </div>
@@ -194,21 +196,20 @@
     enterBtn.addEventListener('click', () => {
       splashScreen.style.display = 'none';
       mainContent.classList.remove('hidden');
-      bgMusic.volume = 0.1; // EVEN quieter music
+      bgMusic.volume = 0.1; // Even quieter music
       bgMusic.play();
       startRain();
     });
 
-    // Updated title typing effect (no empty titles)
-    const titleSequence = [
-      "@", "@b", "@bl", "@blu", "@blun", "@blunk", "@blunks",
-      "@", "@b", "@bl", "@blu", "@blun", "@blunk", "@blunks"
-    ];
+    const titleText = "@blunks";
     let titleIndex = 0;
-
     function typeTitle() {
-      document.title = titleSequence[titleIndex];
-      titleIndex = (titleIndex + 1) % titleSequence.length;
+      if (titleIndex <= titleText.length) {
+        document.title = titleText.slice(0, titleIndex);
+        titleIndex++;
+      } else {
+        titleIndex = 0;
+      }
       setTimeout(typeTitle, 300);
     }
     typeTitle();
