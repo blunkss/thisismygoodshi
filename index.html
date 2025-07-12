@@ -5,6 +5,144 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title></title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Embedded CSS */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      background-color: #000000;
+      font-family: Arial, sans-serif;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .splash-screen {
+      height: 100vh;
+      background-color: #000000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #enter-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-shadow: 0 0 4px #fff;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    #enter-btn:hover {
+      color: #dfdfdf;
+      text-shadow: 0 0 8px #dfdfdf;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .main {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url("https://images.unsplash.com/photo-1532274402917-5aadf881bdfb");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+
+    #rain-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .profile-box {
+      position: relative;
+      z-index: 2;
+      background-color: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 1rem 4rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+      max-width: 700px;
+      width: 90%;
+    }
+
+    .profile-pic {
+      width: 130px;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+    }
+
+    .profile-box h1,
+    .profile-box p {
+      text-shadow: 0 0 6px #ffffff;
+      margin-bottom: 0.5rem;
+    }
+
+    .button-row {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+    }
+
+    .icon-button {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      transition: transform 0.2s ease;
+    }
+
+    .icon-button:hover {
+      transform: scale(1.1);
+    }
+
+    .litecoin-wrapper {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .litecoin-wrapper .tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-bottom: 4px;
+      background: transparent;
+      color: white;
+      font-size: 12px;
+      text-shadow: 0 0 6px white;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .litecoin-wrapper:hover .tooltip {
+      opacity: 1;
+    }
+  </style>
 </head>
 <body>
   <!-- Splash Screen -->
@@ -16,7 +154,6 @@
 
   <!-- Main Content -->
   <div id="main-content" class="main hidden">
-    <!-- Rain Canvas -->
     <canvas id="rain-canvas"></canvas>
 
     <div class="profile-box">
@@ -35,22 +172,19 @@
           <img src="https://media.discordapp.net/attachments/904739641553485844/1393685365193445456/discord.png?ex=68741224&is=6872c0a4&hm=950aae5a51fec773300d3353d245641a6f7a4e524c969c38f1b0f901c1daf987&=&format=webp&quality=lossless" alt="Discord" class="icon-button" />
         </a>
 
-        <!-- Litecoin with tooltip above -->
-        <div class="litecoin-wrapper">
-          <a href="LY5kBWe7r2FT1aR7pV3Joqj2akZAsNAfEd" target="_blank" rel="noopener noreferrer">
-            <img src="https://media.discordapp.net/attachments/904739641553485844/1393685364950040619/litecoin.png?ex=68741224&is=6872c0a4&hm=03d3c7b2b2a469f7c500befd1213f6818709296e192599c4523421ef4f774908&=&format=webp&quality=lossless" alt="Litecoin" class="icon-button" />
-          </a>
-          <span class="tooltip">Copy Address</span>
+        <!-- Litecoin with tooltip and copy -->
+        <div class="litecoin-wrapper" onclick="copyLitecoin()">
+          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685364950040619/litecoin.png?ex=68741224&is=6872c0a4&hm=03d3c7b2b2a469f7c500befd1213f6818709296e192599c4523421ef4f774908&=&format=webp&quality=lossless" alt="Litecoin" class="icon-button" />
+          <span class="tooltip" id="litecoin-tooltip">Copy Address</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Music -->
+  <!-- Background Music -->
   <audio id="bg-music" src="song.mp3" loop preload="auto"></audio>
 
   <script>
-    // Splash dots animation
     const dotsSpan = document.getElementById('dots');
     let dotCount = 0;
     setInterval(() => {
@@ -58,7 +192,6 @@
       dotsSpan.textContent = '.'.repeat(dotCount);
     }, 500);
 
-    // Enter button logic
     const enterBtn = document.getElementById('enter-btn');
     const splashScreen = document.getElementById('splash-screen');
     const mainContent = document.getElementById('main-content');
@@ -67,12 +200,11 @@
     enterBtn.addEventListener('click', () => {
       splashScreen.style.display = 'none';
       mainContent.classList.remove('hidden');
-      bgMusic.volume = 0.5;
+      bgMusic.volume = 0.25; // Quieter music
       bgMusic.play();
       startRain();
     });
 
-    // Typing effect in browser tab
     const titleText = "@blunks";
     let titleIndex = 0;
     function typeTitle() {
@@ -86,7 +218,6 @@
     }
     typeTitle();
 
-    // Rain effect
     function startRain() {
       const canvas = document.getElementById('rain-canvas');
       const ctx = canvas.getContext('2d');
@@ -148,6 +279,18 @@
       }
 
       animate();
+    }
+
+    // Copy Litecoin address
+    function copyLitecoin() {
+      const address = "LY5kBWe7r2FT1aR7pV3Joqj2akZAsNAfEd";
+      navigator.clipboard.writeText(address).then(() => {
+        const tooltip = document.getElementById("litecoin-tooltip");
+        tooltip.textContent = "Copied!";
+        setTimeout(() => {
+          tooltip.textContent = "Copy Address";
+        }, 1500);
+      });
     }
   </script>
 </body>
