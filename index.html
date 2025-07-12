@@ -3,9 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Favicon set to your pixel art icon -->
+  <link rel="icon" type="image/png" href="https://media.discordapp.net/attachments/904739641553485844/1393704841100132383/i-just-did-my-first-two-pixel-art-any-advice-v0-aakjowdhfoca1-removebg-preview.png?ex=68742447&is=6872d2c7&hm=882174acb4c5bb58445350866ae6747d1607c3bb5f21c2ad60e30a00f9c826fc&=&format=webp&quality=lossless" />
+
   <title>@</title>
-  <link rel="icon" href="https://media.discordapp.net/attachments/904739641553485844/1393704841100132383/i-just-did-my-first-two-pixel-art-any-advice-v0-aakjowdhfoca1-removebg-preview.png?ex=68742447&is=6872d2c7&hm=882174acb4c5bb58445350866ae6747d1607c3bb5f21c2ad60e30a00f9c826fc&=&format=webp&quality=lossless" type="image/png" />
+
   <link rel="stylesheet" href="style.css" />
+
   <style>
     /* Embedded CSS */
     * {
@@ -56,7 +61,10 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      /* Background image moved to external CSS as per your setup */
+      /* background-image removed, keep in your CSS */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       overflow: hidden;
     }
 
@@ -79,9 +87,7 @@
       padding: 1rem 4rem;
       border-radius: 20px;
       text-align: center;
-      box-shadow: 
-        0 0 25px rgba(255, 255, 255, 0.15), 
-        0 0 40px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
       max-width: 700px;
       width: 90%;
     }
@@ -200,24 +206,36 @@
     enterBtn.addEventListener('click', () => {
       splashScreen.style.display = 'none';
       mainContent.classList.remove('hidden');
-      bgMusic.volume = 0.15; // Quieter music
+      bgMusic.volume = 0.1; // Even quieter music
       bgMusic.play();
       startRain();
     });
 
-    const titleText = "@blunks";
+    // Title animation: cycle from "@" to "@blunks" and back, no seized.vip
     const baseTitle = "@";
-    let titleIndex = 0;
-    function typeTitle() {
-      if (titleIndex <= titleText.length) {
-        document.title = baseTitle + titleText.slice(0, titleIndex);
-        titleIndex++;
+    const fullTitle = "@blunks";
+    let index = 0;
+    let forward = true;
+
+    function animateTitle() {
+      if (forward) {
+        index++;
+        if (index > fullTitle.length) {
+          forward = false;
+          index = fullTitle.length - 1;
+        }
       } else {
-        titleIndex = 0;
+        index--;
+        if (index < 1) {
+          forward = true;
+          index = 1;
+        }
       }
-      setTimeout(typeTitle, 300);
+      document.title = fullTitle.slice(0, index) || baseTitle;
+      setTimeout(animateTitle, 300);
     }
-    typeTitle();
+
+    animateTitle();
 
     function startRain() {
       const canvas = document.getElementById('rain-canvas');
