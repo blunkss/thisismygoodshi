@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title></title>
+  <title>@blunks</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Embedded CSS */
     * {
       margin: 0;
       padding: 0;
@@ -168,7 +167,6 @@
           <img src="https://media.discordapp.net/attachments/904739641553485844/1393685365193445456/discord.png?ex=68741224&is=6872c0a4&hm=950aae5a51fec773300d3353d245641a6f7a4e524c969c38f1b0f901c1daf987&=&format=webp&quality=lossless" alt="Discord" class="icon-button" />
         </a>
 
-        <!-- Litecoin with tooltip and copy -->
         <div class="litecoin-wrapper" onclick="copyLitecoin()">
           <img src="https://media.discordapp.net/attachments/904739641553485844/1393685364950040619/litecoin.png?ex=68741224&is=6872c0a4&hm=03d3c7b2b2a469f7c500befd1213f6818709296e192599c4523421ef4f774908&=&format=webp&quality=lossless" alt="Litecoin" class="icon-button" />
           <span class="tooltip" id="litecoin-tooltip">Copy Address</span>
@@ -196,20 +194,21 @@
     enterBtn.addEventListener('click', () => {
       splashScreen.style.display = 'none';
       mainContent.classList.remove('hidden');
-      bgMusic.volume = 0.1; // Quieter music
+      bgMusic.volume = 0.1; // EVEN quieter music
       bgMusic.play();
       startRain();
     });
 
-    const titleText = "@blunks";
+    // Updated title typing effect (no empty titles)
+    const titleSequence = [
+      "@", "@b", "@bl", "@blu", "@blun", "@blunk", "@blunks",
+      "@", "@b", "@bl", "@blu", "@blun", "@blunk", "@blunks"
+    ];
     let titleIndex = 0;
+
     function typeTitle() {
-      if (titleIndex <= titleText.length) {
-        document.title = titleText.slice(0, titleIndex);
-        titleIndex++;
-      } else {
-        titleIndex = 0;
-      }
+      document.title = titleSequence[titleIndex];
+      titleIndex = (titleIndex + 1) % titleSequence.length;
       setTimeout(typeTitle, 300);
     }
     typeTitle();
@@ -277,7 +276,6 @@
       animate();
     }
 
-    // Copy Litecoin address
     function copyLitecoin() {
       const address = "LY5kBWe7r2FT1aR7pV3Joqj2akZAsNAfEd";
       navigator.clipboard.writeText(address).then(() => {
