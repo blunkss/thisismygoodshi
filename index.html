@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>@blunks</title>
+  <link rel="icon" type="image/png" href="https://media.discordapp.net/attachments/904739641553485844/1393704841100132383/i-just-did-my-first-two-pixel-art-any-advice-v0-aakjowdhfoca1-removebg-preview.png" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="https://media.discordapp.net/attachments/904739641553485844/1393704841100132383/i-just-did-my-first-two-pixel-art-any-advice-v0-aakjowdhfoca1-removebg-preview.png?ex=68742447&is=6872d2c7&hm=882174acb4c5bb58445350866ae6747d1607c3bb5f21c2ad60e30a00f9c826fc&=&format=webp&quality=lossless" type="image/png" />
   <style>
     * {
       margin: 0;
@@ -15,7 +15,7 @@
 
     body, html {
       height: 100%;
-      background-color: #000;
+      background-color: #000000;
       font-family: Arial, sans-serif;
       color: white;
       overflow-x: hidden;
@@ -23,7 +23,7 @@
 
     .splash-screen {
       height: 100vh;
-      background-color: #000;
+      background-color: #000000;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -55,7 +55,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #000;
+      background-color: #000; /* removed image */
       overflow: hidden;
     }
 
@@ -150,29 +150,31 @@
   <!-- Main Content -->
   <div id="main-content" class="main hidden">
     <canvas id="rain-canvas"></canvas>
+
     <div class="profile-box">
-      <img src="https://cdn.discordapp.com/attachments/904739641553485844/1393687019636654141/pfp.jpg" alt="Profile Picture" class="profile-pic" />
+      <img src="https://cdn.discordapp.com/attachments/904739641553485844/1393687019636654141/pfp.jpg?ex=687413ae&is=6872c22e&hm=c4e4c6867f884e22bc0bdcc1431491f6a90efcc2fe890b6f9d7237ba246efd76&" alt="My Profile Picture" class="profile-pic" />
       <h1>@blunks</h1>
       <p>all my stuff below!</p>
+
       <div class="button-row">
         <a href="https://www.roblox.com/users/2620587184/profile" target="_blank">
-          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685365432389692/roblox.png" class="icon-button" />
+          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685365432389692/roblox.png?ex=68741224&is=6872c0a4&hm=b1566d93ec50467da0ab48260aeb3bc3cd62191e9d27c8adaa426d0a953b8dbc&=&format=webp&quality=lossless" alt="Roblox" class="icon-button" />
         </a>
         <a href="https://www.tiktok.com/@blunksss" target="_blank">
-          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685364635336885/tiktok.png" class="icon-button" />
+          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685364635336885/tiktok.png?ex=68741224&is=6872c0a4&hm=ac11edf1d33511f481c05d740aa8cfd4520481f6fb4f71a488f3f7703f59a3f6&=&format=webp&quality=lossless" alt="TikTok" class="icon-button" />
         </a>
         <a href="https://discord.com/users/797610524333965342" target="_blank">
-          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685365193445456/discord.png" class="icon-button" />
+          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685365193445456/discord.png?ex=68741224&is=6872c0a4&hm=950aae5a51fec773300d3353d245641a6f7a4e524c969c38f1b0f901c1daf987&=&format=webp&quality=lossless" alt="Discord" class="icon-button" />
         </a>
         <div class="litecoin-wrapper" onclick="copyLitecoin()">
-          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685364950040619/litecoin.png" class="icon-button" />
+          <img src="https://media.discordapp.net/attachments/904739641553485844/1393685364950040619/litecoin.png?ex=68741224&is=6872c0a4&hm=03d3c7b2b2a469f7c500befd1213f6818709296e192599c4523421ef4f774908&=&format=webp&quality=lossless" alt="Litecoin" class="icon-button" />
           <span class="tooltip" id="litecoin-tooltip">Copy Address</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Music -->
+  <!-- Background Music -->
   <audio id="bg-music" src="song.mp3" loop preload="auto"></audio>
 
   <script>
@@ -191,23 +193,26 @@
     enterBtn.addEventListener('click', () => {
       splashScreen.style.display = 'none';
       mainContent.classList.remove('hidden');
-      bgMusic.volume = 0.1; // extra quiet
+      bgMusic.volume = 0.1; // even quieter
       bgMusic.play();
       startRain();
     });
 
-    // Clean looping title animation
+    // Title typing loop (@ -> @blunks)
     const titleText = "@blunks";
-    let titleIndex = 1;
+    let titleIndex = 0;
+
     function typeTitle() {
-      document.title = titleText.slice(0, titleIndex);
-      titleIndex++;
-      if (titleIndex > titleText.length) titleIndex = 1;
+      if (titleIndex <= titleText.length) {
+        document.title = titleText.slice(0, titleIndex);
+        titleIndex++;
+      } else {
+        titleIndex = 0;
+      }
       setTimeout(typeTitle, 300);
     }
     typeTitle();
 
-    // Rain animation
     function startRain() {
       const canvas = document.getElementById('rain-canvas');
       const ctx = canvas.getContext('2d');
@@ -271,7 +276,6 @@
       animate();
     }
 
-    // Copy Litecoin address
     function copyLitecoin() {
       const address = "LY5kBWe7r2FT1aR7pV3Joqj2akZAsNAfEd";
       navigator.clipboard.writeText(address).then(() => {
