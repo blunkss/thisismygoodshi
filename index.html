@@ -90,6 +90,8 @@
       box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
       max-width: 700px;
       width: 90%;
+      /* added subtle glow */
+      box-shadow: 0 0 15px 3px rgba(255, 255, 255, 0.3);
     }
 
     .profile-pic {
@@ -118,6 +120,7 @@
       height: 40px;
       object-fit: contain;
       transition: transform 0.2s ease;
+      cursor: pointer;
     }
 
     .icon-button:hover {
@@ -206,14 +209,14 @@
     enterBtn.addEventListener('click', () => {
       splashScreen.style.display = 'none';
       mainContent.classList.remove('hidden');
-      bgMusic.volume = 0.1; // Even quieter music
+      bgMusic.volume = 0.15; // Even quieter music
       bgMusic.play();
       startRain();
     });
 
     // Title animation: cycle from "@" to "@blunks" and back, no seized.vip
     const baseTitle = "@";
-    const fullTitle = "@blunks";
+    const fullTitle = "blunks";
     let index = 0;
     let forward = true;
 
@@ -226,12 +229,12 @@
         }
       } else {
         index--;
-        if (index < 1) {
+        if (index < 0) {
           forward = true;
-          index = 1;
+          index = 0;
         }
       }
-      document.title = fullTitle.slice(0, index) || baseTitle;
+      document.title = baseTitle + fullTitle.slice(0, index);
       setTimeout(animateTitle, 300);
     }
 
